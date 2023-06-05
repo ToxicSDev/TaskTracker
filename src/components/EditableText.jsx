@@ -1,46 +1,39 @@
-import React from "react";
+import React, { useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) => {
-    const selectToEnd = (input) => {
-        if (input) {
-            input.focus();
-        }
-    };
+    const inputRef = useRef(null);
 
-    const handleDelete = () => {
-        if (onDelete) {
-            onDelete(id);
-        }
-    };
+    const handleDelete = useCallback(() => {
+        onDelete && onDelete(id);
+    }, [onDelete, id]);
 
-    const handleValueClick = () => {
-        onValueClick(id);
-    };
+    const handleValueClick = useCallback(() => {
+        onValueClick && onValueClick(id);
+    }, [onValueClick, id]);
 
-    const handleFinishEdit = (e) => {
-        if (e.type === "keypress" && e.key !== "Enter") {
-            return;
-        }
+    const handleFinishEdit = useCallback((e) => {
+        if (e.type === "keypress" && e.key !== "Enter") return;
 
         const targetValue = e.target.value;
 
         if (onEdit && targetValue.trim().length) {
             onEdit(id, targetValue);
         }
-    };
+    }, [onEdit, id]);
 
-    const renderEdit = () => (
+    const renderEditView = () => (
         <input
             type="text"
             className="editing"
-            ref={selectToEnd}
+            ref={inputRef}
             defaultValue={value}
             onBlur={handleFinishEdit}
             onKeyPress={handleFinishEdit}
         />
     );
 
-    const renderValue = () => (
+    const renderReadView = () => (
         <span>
             <input
                 type="text"
@@ -56,7 +49,23 @@ const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) =>
         </span>
     );
 
-    return editing ? renderEdit() : renderValue();
+    return editing ? renderEditView() : renderReadView();
+};
+
+EditableText.propTypes = {
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onEdit: PropTypes.func,
+    editing: PropTypes.bool,
+    onValueClick: PropTypes.func,
+    value: PropTypes.string.isRequired,
+    onDelete: PropTypes.func,
+};
+
+EditableText.defaultProps = {
+    onEdit: null,
+    editing: false,
+    onValueClick: null,
+    onDelete: null,
 };
 
 export default EditableText;

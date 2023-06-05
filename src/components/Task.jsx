@@ -1,58 +1,22 @@
-import React from "react";
-import { DragSource, DropTarget } from "react-dnd";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Task = ({
-    children,
-    connectDragSource,
-    connectDropTarget,
-    isDragging,
-    onMoveTask,
-    id,
-}) => {
-    const taskSource = {
-        beginDrag() {
-            return { id };
-        },
-        isDragging(props, monitor) {
-            return props.id === monitor.getItem().id;
-        },
-    };
-
-    const taskTarget = {
-        hover(targetProps, monitor) {
-            const targetId = targetProps.id;
-            const sourceId = monitor.getItem().id;
-
-            if (sourceId !== targetId) {
-                onMoveTask(sourceId, targetId);
-            }
-        },
-    };
-
-    const collectDragSource = (connect, monitor) => ({
-        connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging(),
-    });
-
-    const collectDropTarget = (connect) => ({
-        connectDropTarget: connect.dropTarget(),
-    });
-
-    return connectDragSource(
-        connectDropTarget(
-            <li style={{ opacity: isDragging ? 0 : 1 }} className="task">
-                {children}
+const Task = ({ taskContent, dragSourceConnector, dropTargetConnector, isBeingDragged }) => {
+    const taskStyle = { opacity: isBeingDragged ? 0 : 1 };
+    return dragSourceConnector(
+        dropTargetConnector(
+            <li style={taskStyle} className="task">
+                {taskContent}
             </li>
         )
     );
 };
 
-const TaskDragSource = DragSource("NOTE", taskSource, collectDragSource)(
-    Task
-);
+Task.propTypes = {
+    taskContent: PropTypes.node.isRequired,
+    dragSourceConnector: PropTypes.func.isRequired,
+    dropTargetConnector: PropTypes.func.isRequired,
+    isBeingDragged: PropTypes.bool.isRequired,
+};
 
-const TaskDropTarget = DropTarget("NOTE", taskTarget, collectDropTarget)(
-    TaskDragSource
-);
-
-export default TaskDropTarget;
+export default Task;
