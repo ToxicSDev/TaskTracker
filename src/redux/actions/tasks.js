@@ -1,6 +1,6 @@
 import uuid from "uuid";
 
-import { generateUUIDv4, validateUUIDv4 } from "../../utils/validator";
+import { validateUUIDv4 } from "../../utils/validator";
 import * as actionTypes from "../types/actionTypes";
 
 function createTask(text) {
