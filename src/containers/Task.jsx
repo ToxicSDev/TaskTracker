@@ -1,6 +1,6 @@
 import Task from "../components/Task.jsx";
 import { DragSource, DropTarget } from "react-dnd";
-import * as itemTypes from "../redux/types/itemTypes";
+import * as objectTypes from "../redux/types/objectTypes";
 
 const taskSource = {
     beginDrag(props) {
@@ -37,7 +37,7 @@ const collectDropTarget = (connect) => ({
 });
 
 export default DragSource(
-    itemTypes.TASK,
+    objectTypes.TASK,
     taskSource,
     collectDragSource
-)(DropTarget(itemTypes.TASK, taskTarget, collectDropTarget)(Task));
+)(DropTarget(objectTypes.TASK, taskTarget, collectDropTarget)(Task));
