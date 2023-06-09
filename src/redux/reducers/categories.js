@@ -1,28 +1,28 @@
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 import * as actionTypes from "../types/actionTypes";
 
 const defaultState = [
     {
-        id: uuid.v4(),
+        id: uuidv4(),
         name: "To Do",
         editing: false,
         taskList: [],
     },
     {
-        id: uuid.v4(),
+        id: uuidv4(),
         name: "In Progress",
         editing: false,
         taskList: [],
     },
     {
-        id: uuid.v4(),
+        id: uuidv4(),
         name: "Finished",
         editing: false,
         taskList: [],
     },
     {
-        id: uuid.v4(),
+        id: uuidv4(),
         name: "Cancelled",
         editing: false,
         taskList: [],

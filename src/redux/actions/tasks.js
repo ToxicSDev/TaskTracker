@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 import { validateUUIDv4 } from "../../utils/validator";
 import * as actionTypes from "../types/actionTypes";
@@ -11,7 +11,7 @@ function createTask(text) {
     return {
         type: actionTypes.CREATE_TASK,
         payload: {
-            id: uuid.v4(),
+            id: uuidv4(),
             editing: false,
             text,
         },

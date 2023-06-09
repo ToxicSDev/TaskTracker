@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 import { validateUUIDv4 } from "../../utils/validator";
 import * as actionTypes from "../types/actionTypes";
@@ -7,7 +7,7 @@ function createCategory(categoryName) {
     return {
         type: actionTypes.CREATE_CATEGORY,
         payload: {
-            id: uuid.v4(),
+            id: uuidv4(),
             name: categoryName,
             taskList: [],
         },
