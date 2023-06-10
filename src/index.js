@@ -1,10 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import localforage from "localforage";
 import configStore from "./redux";
-import App from './App.jsx';
-import './index.css';
+
+import App from "./App.jsx";
+import "./style/main.css";
 
 const localStore = localforage.createInstance({
   name: "tasktracker",
@@ -40,9 +41,10 @@ const storePromise = localStore
   });
 
 storePromise.then((store) => {
-  ReactDOM.createRoot(document.getElementById('root')).render(
+  ReactDOM.render(
     <Provider store={store}>
       <App onReset={onReset} />
     </Provider>,
+    document.getElementById("tasktracker")
   );
 });

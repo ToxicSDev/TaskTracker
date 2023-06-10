@@ -3,52 +3,48 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateUUIDv4 } from "../../utils/validator";
 import * as actionTypes from "../types/actionTypes";
 
-function createTask(text) {
-    if (typeof text !== 'string' || text.trim() === '') {
-        throw new Error('Error: Task text must be a non-empty string');
-    }
 
-    return {
-        type: actionTypes.CREATE_TASK,
-        payload: {
-            id: uuidv4(),
-            editing: false,
-            text,
-        },
-    };
+function createTask(text) {
+  return {
+    type: actionTypes.CREATE_TASK,
+    payload: {
+      id: uuidv4(),
+      editing: false,
+      text,
+    },
+  };
 }
 
+
 function updateTask(updatedTask) {
-    if (updatedTask === null) {
-        throw new Error('Error: Task to update should be a non-null object');
-    }
+  if (!validateUUIDv4(updatedTask.id)) {
+    throw new Error(
+      `params have not valid uuids ${JSON.stringify(updatedTask)}`
+    );
+  }
 
-    if (!updatedTask.hasOwnProperty('id') || !validateUUIDv4(updatedTask.id)) {
-        throw new Error(`Error: Invalid or missing uuid for ${JSON.stringify(updatedTask)}`);
-    }
-
-    return {
-        type: actionTypes.UPDATE_TASK,
-        payload: updatedTask,
-    };
+  return {
+    type: actionTypes.UPDATE_TASK,
+    payload: updatedTask,
+  };
 }
 
 
 function deleteTask(id) {
-    if (!validateUUIDv4(id)) {
-        throw new Error(`Error: Invalid uuid - ${id}`);
-    }
+  if (!validateUUIDv4(id)) {
+    throw new Error(`params have not valid uuids ${id}`);
+  }
 
-    return {
-        type: actionTypes.DELETE_TASK,
-        payload: {
-            id,
-        },
-    };
+  return {
+    type: actionTypes.DELETE_TASK,
+    payload: {
+      id,
+    },
+  };
 }
 
 export default {
-    createTask,
-    updateTask,
-    deleteTask,
+  createTask,
+  updateTask,
+  deleteTask,
 };

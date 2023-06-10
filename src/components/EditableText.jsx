@@ -1,71 +1,62 @@
-import React, { useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
 
 const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) => {
-    const inputRef = useRef(null);
+  const selectToEnd = (input) => {
+    if (input) input.focus();
+  };
 
-    const handleDelete = useCallback(() => {
-        onDelete && onDelete(id);
-    }, [onDelete, id]);
+  const handleDelete = () => {
+    if (onDelete) onDelete(id);
+  };
 
-    const handleValueClick = useCallback(() => {
-        onValueClick && onValueClick(id);
-    }, [onValueClick, id]);
+  const handleValueClick = () => onValueClick(id);
 
-    const handleFinishEdit = useCallback((e) => {
-        if (e.type === "keypress" && e.key !== "Enter") return;
+  const handleFinishEdit = (e) => {
+    if (e.type === "keypress" && e.key !== "Enter") {
+      return;
+    }
 
-        const targetValue = e.target.value;
+    const targetValue = e.target.value;
 
-        if (onEdit && targetValue.trim().length) {
-            onEdit(id, targetValue);
-        }
-    }, [onEdit, id]);
+    if (onEdit && targetValue.trim().length) {
+      onEdit(id, targetValue);
+    }
+  };
 
-    const renderEditView = () => (
+  const renderEdit = () => (
+    <input
+      type="text"
+      className="editing"
+      ref={selectToEnd}
+      defaultValue={value}
+      onBlur={handleFinishEdit}
+      onKeyPress={handleFinishEdit}
+    />
+  );
+
+  const renderValue = () => {
+    return (
+      <span>
         <input
-            type="text"
-            className="editing"
-            ref={inputRef}
-            defaultValue={value}
-            onBlur={handleFinishEdit}
-            onKeyPress={handleFinishEdit}
+          type="text"
+          onClick={handleValueClick}
+          defaultValue={value}
+          readOnly
         />
+        {onDelete ? (
+          <span className="delete" onClick={handleDelete}>
+            &times;
+          </span>
+        ) : null}
+      </span>
     );
+  };
 
-    const renderReadView = () => (
-        <span>
-            <input
-                type="text"
-                onClick={handleValueClick}
-                defaultValue={value}
-                readOnly
-            />
-            {onDelete && (
-                <span className="delete" onClick={handleDelete}>
-                    &times;
-                </span>
-            )}
-        </span>
-    );
+  if (editing) {
+    return renderEdit();
+  }
 
-    return editing ? renderEditView() : renderReadView();
-};
-
-EditableText.propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    onEdit: PropTypes.func,
-    editing: PropTypes.bool,
-    onValueClick: PropTypes.func,
-    value: PropTypes.string.isRequired,
-    onDelete: PropTypes.func,
-};
-
-EditableText.defaultProps = {
-    onEdit: null,
-    editing: false,
-    onValueClick: null,
-    onDelete: null,
+  return renderValue();
 };
 
 export default EditableText;

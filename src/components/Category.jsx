@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TaskList from './TaskList';
-import EditableText from './EditableText';
+import React from "react";
 
-const Category = ({
+import TaskList from "./TaskList";
+import EditableText from "./EditableText";
+
+const Category = (props) => {
+  const {
     onCreateTask,
     onMoveTask,
     onEditTask,
@@ -15,65 +16,48 @@ const Category = ({
     connectDragSource,
     connectDragPreview,
     connectDropTarget,
-}) => {
-    const categoryTasks = category.tasks
-        .map((id) => allTasks.find((task) => task.id === id))
-        .filter((task) => task);
+  } = props;
 
-    const handleDeleteTask = (taskId) => {
-        onDeleteTask(category.id, taskId);
-    };
+  const categoryTasks = category.taskList
+    .map((id) => allTasks.find((task) => task.id === id))
+    .filter((task) => task);
 
-    const handleDeleteCategory = () => {
-        onDeleteCategory(category.id);
-        category.tasks.forEach((taskId) => onDeleteTask(null, taskId));
-    };
+  const handleDeleteTask = (taskId) => onDeleteTask(category.id, taskId);
 
-    const handleCreateTask = () => {
-        onCreateTask(category.id);
-    };
+  const handleDeleteCategory = () => {
+    onDeleteCategory(category.id);
+    category.taskList.forEach((taskId) => onDeleteTask(null, taskId));
+  };
 
-    return connectDragPreview(
-        connectDropTarget(
-            <div className="category">
-                <h2 className="category__name">
-                    <EditableText
-                        editing={category.editing}
-                        id={category.id}
-                        value={category.name}
-                        onEdit={onEditCategory}
-                        onValueClick={onEditCategory}
-                    />
-                    <button className="category__delete" onClick={handleDeleteCategory} />
-                    {connectDragSource(<button className="category__drag" />)}
-                </h2>
-                <TaskList
-                    tasks={categoryTasks}
-                    onDeleteTask={handleDeleteTask}
-                    onEditTask={onEditTask}
-                    onValueClick={onEditTask}
-                    onMoveTask={onMoveTask}
-                />
-                <button className="add-task" onClick={handleCreateTask}>
-                    + TASK
-                </button>
-            </div>
-        ),
-    );
-};
+  const handleCreateTask = () => onCreateTask(category.id);
 
-Category.propTypes = {
-    onCreateTask: PropTypes.func.isRequired,
-    onMoveTask: PropTypes.func.isRequired,
-    onEditTask: PropTypes.func.isRequired,
-    onEditCategory: PropTypes.func.isRequired,
-    onDeleteCategory: PropTypes.func.isRequired,
-    onDeleteTask: PropTypes.func.isRequired,
-    category: PropTypes.object.isRequired,
-    allTasks: PropTypes.array.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
+  return connectDragPreview(
+    connectDropTarget(
+      <div className="category">
+        <h2 className="category__name">
+          <EditableText
+            editing={category.editing}
+            id={category.id}
+            value={category.name}
+            onEdit={onEditCategory}
+            onValueClick={onEditCategory}
+          />
+          <button className="category__delete" onClick={handleDeleteCategory} />
+          {connectDragSource(<button className="category__drag" />)}
+        </h2>
+        <TaskList
+          tasks={categoryTasks}
+          onDeleteTask={handleDeleteTask}
+          onEditTask={onEditTask}
+          onValueClick={onEditTask}
+          onMoveTask={onMoveTask}
+        />
+        <button className="add-task" onClick={handleCreateTask}>
+          + Task
+        </button>
+      </div>
+    )
+  );
 };
 
 export default Category;

@@ -1,35 +1,67 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import React from "react";
+import HTML5Backend from "react-dnd-html5-backend";
+import { DragDropContext } from "react-dnd";
+import { connect } from "react-redux";
 
-function App() {
-  const [count, setCount] = useState(0);
+import categoryActions from "./redux/actions/categories";
+import CategoryList from "./components/CategoryList";
 
+const App = (props) => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="tasktracker">
+      <div className="app-title">
+        <div className="app-buttons">
+          <button className="reset-store" onClick={props.onReset}>
+            Reset Board
+          </button>
+          <button className="add-category" onClick={props.onCreateCategory}>
+            Add Category
+          </button>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <CategoryList
+        categories={props.categories}
+        onEditCategory={props.onEditCategory}
+        onDeleteCategory={props.onDeleteCategory}
+        onMoveCategory={props.onMoveCategory}
+      />
+    </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => ({
+  categories: state.categories,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onCreateCategory() {
+    dispatch(categoryActions.createCategory("New Category"));
+  },
+
+  onEditCategory(categoryId, name) {
+    const updatedCategory = {
+      id: categoryId,
+    };
+
+    if (name) {
+      updatedCategory.name = name;
+      updatedCategory.editing = false;
+    } else {
+      updatedCategory.editing = true;
+    }
+
+    dispatch(categoryActions.updateCategory(updatedCategory));
+  },
+
+  onDeleteCategory(categoryId) {
+    dispatch(categoryActions.deleteCategory(categoryId));
+  },
+
+  onMoveCategory(sourceId, targetId) {
+    dispatch(categoryActions.move("category", sourceId, targetId));
+  },
+});
+
+export default DragDropContext(HTML5Backend)(
+  connect(mapStateToProps, mapDispatchToProps)(App)
+);
