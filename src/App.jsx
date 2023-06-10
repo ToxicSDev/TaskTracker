@@ -11,7 +11,7 @@ const App = (props) => {
     <div className="tasktracker">
       <div className="app-title">
         <div className="app-buttons">
-          <button className="reset-store" onClick={props.onReset}>
+          <button className="reset-board" onClick={props.onReset}>
             Reset Board
           </button>
           <button className="add-category" onClick={props.onCreateCategory}>

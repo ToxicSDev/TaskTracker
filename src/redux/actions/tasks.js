@@ -18,9 +18,7 @@ function createTask(text) {
 
 function updateTask(updatedTask) {
   if (!validateUUIDv4(updatedTask.id)) {
-    throw new Error(
-      `params have not valid uuids ${JSON.stringify(updatedTask)}`
-    );
+    throw new Error(`Updated task doesn't have a valid UUIDv4 id - ${updatedTask.id}`);
   }
 
   return {
@@ -32,7 +30,7 @@ function updateTask(updatedTask) {
 
 function deleteTask(id) {
   if (!validateUUIDv4(id)) {
-    throw new Error(`params have not valid uuids ${id}`);
+    throw new Error(`Task doesn't have a valid UUIDv4 id - ${id}`);
   }
 
   return {

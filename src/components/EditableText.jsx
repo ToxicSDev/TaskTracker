@@ -1,24 +1,17 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) => {
-  const selectToEnd = (input) => {
-    if (input) input.focus();
-  };
-
-  const handleDelete = () => {
-    if (onDelete) onDelete(id);
-  };
+  const handleDelete = () => onDelete && onDelete(id);
 
   const handleValueClick = () => onValueClick(id);
 
   const handleFinishEdit = (e) => {
-    if (e.type === "keypress" && e.key !== "Enter") {
-      return;
-    }
+    const isEnterKey = e.type === 'keypress' && e.key === 'Enter';
+    const isBlurEvent = e.type === 'blur';
+    const targetValue = e.target.value.trim();
 
-    const targetValue = e.target.value;
-
-    if (onEdit && targetValue.trim().length) {
+    if (onEdit && (isEnterKey || isBlurEvent) && targetValue.length) {
       onEdit(id, targetValue);
     }
   };
@@ -27,36 +20,42 @@ const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) =>
     <input
       type="text"
       className="editing"
-      ref={selectToEnd}
       defaultValue={value}
+      autoFocus
       onBlur={handleFinishEdit}
       onKeyPress={handleFinishEdit}
     />
   );
 
-  const renderValue = () => {
-    return (
-      <span>
-        <input
-          type="text"
-          onClick={handleValueClick}
-          defaultValue={value}
-          readOnly
-        />
-        {onDelete ? (
-          <span className="delete" onClick={handleDelete}>
-            &times;
-          </span>
-        ) : null}
-      </span>
-    );
-  };
+  const renderValue = () => (
+    <span>
+      <input
+        type="text"
+        onClick={handleValueClick}
+        defaultValue={value}
+        readOnly
+      />
+      {onDelete && (
+        <span className="delete" onClick={handleDelete}>
+          &times;
+        </span>
+      )}
+    </span>
+  );
 
-  if (editing) {
-    return renderEdit();
-  }
+  return editing ? renderEdit() : renderValue();
+};
 
-  return renderValue();
+EditableText.propTypes = {
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+  onEdit: PropTypes.func,
+  editing: PropTypes.bool,
+  onValueClick: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  onDelete: PropTypes.func,
 };
 
 export default EditableText;

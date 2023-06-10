@@ -1,18 +1,17 @@
-import { connect } from "react-redux";
-import { DragSource, DropTarget } from "react-dnd";
+import { connect } from 'react-redux';
+import { DragSource, DropTarget } from 'react-dnd';
+import PropTypes from 'prop-types';
 
-import Category from "../components/Category";
-import categoryActions from "../redux/actions/categories";
-import taskActions from "../redux/actions/tasks";
-import * as objectTypes from "../redux/types/objectTypes";
+import Category from '../components/Category';
+import categoryActions from '../redux/actions/categories';
+import taskActions from '../redux/actions/tasks';
+import * as objectTypes from '../redux/types/objectTypes';
 
 const categorySource = {
   beginDrag(props) {
-    const item = {
+    return {
       id: props.category.id,
     };
-
-    return item;
   },
   isDragging(props, monitor) {
     return props.id === monitor.getItem().id;
@@ -25,6 +24,7 @@ const categoryTarget = {
     const sourceProps = monitor.getItem();
     const sourceId = sourceProps.id;
     const sourceType = monitor.getItemType();
+
     if (!targetProps.category.taskList.length && sourceType === objectTypes.TASK) {
       targetProps.attachToCategory(targetId, sourceId);
     } else if (targetId !== sourceId && sourceType === objectTypes.CATEGORY) {
@@ -49,7 +49,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onCreateTask(categoryId) {
-    const newTask = taskActions.createTask("New Task");
+    const newTask = taskActions.createTask('New Task');
     dispatch(newTask);
     dispatch(categoryActions.attachToCategory(categoryId, newTask.payload.id));
   },
@@ -65,20 +65,15 @@ const mapDispatchToProps = (dispatch) => ({
   onEditTask(taskId, value) {
     const updatedTask = {
       id: taskId,
+      text: value || '',
+      editing: !value,
     };
-
-    if (value) {
-      updatedTask.text = value;
-      updatedTask.editing = false;
-    } else {
-      updatedTask.editing = true;
-    }
 
     dispatch(taskActions.updateTask(updatedTask));
   },
 
   onMoveTask(sourceId, targetId) {
-    dispatch(categoryActions.move("task", sourceId, targetId));
+    dispatch(categoryActions.move('task', sourceId, targetId));
   },
 
   attachToCategory(categoryId, taskId) {
@@ -86,19 +81,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  DragSource(
-    objectTypes.CATEGORY,
-    categorySource,
-    collectDragSource
-  )(
-    DropTarget(
-      [objectTypes.TASK, objectTypes.CATEGORY],
-      categoryTarget,
-      collectDropTarget
-    )(Category)
-  )
+const DnDWrapper = DragSource(objectTypes.CATEGORY, categorySource, collectDragSource)(
+  DropTarget([objectTypes.TASK, objectTypes.CATEGORY], categoryTarget, collectDropTarget)(Category)
 );
+
+DnDWrapper.propTypes = {
+  allTasks: PropTypes.array.isRequired,
+  category: PropTypes.object.isRequired,
+  attachToCategory: PropTypes.func.isRequired,
+  onMoveCategory: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DnDWrapper);

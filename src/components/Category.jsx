@@ -1,23 +1,22 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import TaskList from "./TaskList";
-import EditableText from "./EditableText";
+import TaskList from './TaskList';
+import EditableText from './EditableText';
 
-const Category = (props) => {
-  const {
-    onCreateTask,
-    onMoveTask,
-    onEditTask,
-    onEditCategory,
-    onDeleteCategory,
-    onDeleteTask,
-    category,
-    allTasks,
-    connectDragSource,
-    connectDragPreview,
-    connectDropTarget,
-  } = props;
-
+const Category = ({
+  onCreateTask,
+  onMoveTask,
+  onEditTask,
+  onEditCategory,
+  onDeleteCategory,
+  onDeleteTask,
+  category,
+  allTasks,
+  connectDragSource,
+  connectDragPreview,
+  connectDropTarget,
+}) => {
   const categoryTasks = category.taskList
     .map((id) => allTasks.find((task) => task.id === id))
     .filter((task) => task);
@@ -58,6 +57,42 @@ const Category = (props) => {
       </div>
     )
   );
+};
+
+Category.propTypes = {
+  onCreateTask: PropTypes.func.isRequired,
+  onMoveTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
+  onEditCategory: PropTypes.func.isRequired,
+  onDeleteCategory: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  category: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
+    editing: PropTypes.bool,
+    name: PropTypes.string,
+    taskList: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ])
+    ).isRequired,
+  }).isRequired,
+  allTasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]).isRequired,
+      text: PropTypes.string,
+      editing: PropTypes.bool,
+    })
+  ).isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  connectDragPreview: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
 };
 
 export default Category;

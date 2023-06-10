@@ -18,9 +18,7 @@ function createCategory(name) {
 
 function updateCategory(updatedCategory) {
   if (!validateUUIDv4(updatedCategory.id)) {
-    throw new Error(
-      `params have not valid uuids ${JSON.stringify(updatedCategory)}`
-    );
+    throw new Error(`Updated category doesn't have a valid UUIDv4 id - ${updatedCategory.id}`);
   }
 
   return {
@@ -32,7 +30,7 @@ function updateCategory(updatedCategory) {
 
 function deleteCategory(id) {
   if (!validateUUIDv4(id)) {
-    throw new Error(`params have not valid uuids ${id}`);
+    throw new Error(`Category doesn't have a valid UUIDv4 id - ${id}`);
   }
 
   return {
@@ -46,7 +44,7 @@ function deleteCategory(id) {
 
 function attachToCategory(categoryId, taskId) {
   if (!validateUUIDv4(categoryId) || !validateUUIDv4(taskId)) {
-    throw new Error(`params have not valid uuids ${categoryId} ${taskId}`);
+    throw new Error(`Category or task doesn't have a valid UUIDv4 id - ${id} / ${taskId}`);
   }
 
   return {
@@ -61,7 +59,7 @@ function attachToCategory(categoryId, taskId) {
 
 function detachFromCategory(categoryId, taskId) {
   if (!validateUUIDv4(categoryId) || !validateUUIDv4(taskId)) {
-    throw new Error(`params have not valid uuids ${categoryId} ${taskId}`);
+    throw new Error(`Category or task doesn't have a valid UUIDv4 id - ${categoryId} / ${taskId}`);
   }
 
   return {
@@ -76,7 +74,7 @@ function detachFromCategory(categoryId, taskId) {
 
 function move(target, sourceId, targetId) {
   if (!validateUUIDv4(sourceId) || !validateUUIDv4(targetId)) {
-    throw new Error(`params have not valid uuids ${target} ${sourceId} ${targetId}`);
+    throw new Error(`Source or target id for move action doesn't have a valid UUIDv4 id - ${sourceId} / ${targetId}`);
   }
 
   return {
