@@ -5,13 +5,13 @@ services:
     expose:
       - "3000"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://tasktracker:3000/" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/" ]
       interval: 30s
       timeout: 3s
       retries: 3
       start_period: 5s
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: on-failure
         max_attempts: 3
@@ -37,7 +37,7 @@ services:
       - tasktracker
     ports:
       - "80:80"
-      
+
 networks:
   default:
     driver: bridge
