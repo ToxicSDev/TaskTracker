@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TaskList from './TaskList';
-import EditableText from './EditableText';
+import Editable from './Editable';
 
 const Category = ({
   onCreateTask,
@@ -33,16 +33,15 @@ const Category = ({
   return connectDragPreview(
     connectDropTarget(
       <div className="category">
-        <h2 className="category__name">
-          <EditableText
+        <h2 className="category-name">
+          <Editable
             editing={category.editing}
             id={category.id}
             value={category.name}
             onEdit={onEditCategory}
             onValueClick={onEditCategory}
           />
-          <button className="category__delete" onClick={handleDeleteCategory} />
-          {connectDragSource(<button className="category__drag" />)}
+          <button className="category-delete" onClick={handleDeleteCategory} />
         </h2>
         <TaskList
           tasks={categoryTasks}

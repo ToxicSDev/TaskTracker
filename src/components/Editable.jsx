@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) => {
+const Editable = ({ id, onEdit, editing, onValueClick, value, onDelete }) => {
   const handleDelete = () => onDelete && onDelete(id);
 
   const handleValueClick = () => onValueClick(id);
@@ -46,7 +46,7 @@ const EditableText = ({ id, onEdit, editing, onValueClick, value, onDelete }) =>
   return editing ? renderEdit() : renderValue();
 };
 
-EditableText.propTypes = {
+Editable.propTypes = {
   id: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -58,4 +58,4 @@ EditableText.propTypes = {
   onDelete: PropTypes.func,
 };
 
-export default EditableText;
+export default Editable;

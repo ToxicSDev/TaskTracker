@@ -5,11 +5,14 @@ import { connect } from "react-redux";
 
 import categoryActions from "./redux/actions/categories";
 import CategoryList from "./components/CategoryList";
+import logo from './assets/icon.png';
 
 const App = (props) => {
   return (
     <div className="tasktracker">
       <div className="app-title">
+        <img className="logo" src={logo} />
+        <h1 className="app-title-text">TaskTracker</h1>
         <div className="app-buttons">
           <button className="reset-board" onClick={props.onReset}>
             Reset Board
