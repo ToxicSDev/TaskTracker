@@ -33,16 +33,18 @@ const Category = ({
   return connectDragPreview(
     connectDropTarget(
       <div className="category">
-        <h2 className="category-name">
-          <Editable
-            editing={category.editing}
-            id={category.id}
-            value={category.name}
-            onEdit={onEditCategory}
-            onValueClick={onEditCategory}
-          />
-          <button className="category-delete" onClick={handleDeleteCategory} />
-        </h2>
+        {connectDragSource(
+          <h2 className="category-name">
+            <Editable
+              editing={category.editing}
+              id={category.id}
+              value={category.name}
+              onEdit={onEditCategory}
+              onValueClick={onEditCategory}
+            />
+            <button className="category-delete" onClick={handleDeleteCategory} />
+          </h2>
+        )}
         <TaskList
           tasks={categoryTasks}
           onDeleteTask={handleDeleteTask}
