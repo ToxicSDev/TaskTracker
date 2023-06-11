@@ -474,8 +474,8 @@ body {
 }
 
 .category-name .editing {
-    -webkit-box-shadow: inset 0 -2px #78e76e;
-    box-shadow: inset 0 -2px #78e76e;
+    -webkit-box-shadow: inset 0 -2px #000000;
+    box-shadow: inset 0 -2px #000000;
 }
 
 .category-delete {
@@ -584,7 +584,7 @@ body {
 }
 
 .task .editing {
-    border-bottom: 2px solid #f18a24;
+    border-bottom: 2px solid #000000;
 }
 
 .task .delete {
