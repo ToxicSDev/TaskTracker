@@ -57,6 +57,7 @@ const Category = ({
           onEditTask={onEditTask}
           onValueClick={onEditTask}
           onMoveTask={onMoveTask}
+          categoryColor={category.color}
         />
         <button className="add-task" onClick={handleCreateTask}>
           + Task

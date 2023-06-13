@@ -9,13 +9,14 @@ const TaskList = ({
   onDeleteTask,
   onEditTask,
   onValueClick,
+  categoryColor,
 }) => (
   <ul className="task-list">
     {tasks.map((task) => {
       const { id, editing, text } = task;
 
       return (
-        <Task id={id} key={id} onMoveTask={onMoveTask}>
+        <Task id={id} key={id} onMoveTask={onMoveTask} categoryColor={categoryColor}>
           <Editable
             editing={editing}
             id={id}
@@ -45,6 +46,7 @@ TaskList.propTypes = {
   onDeleteTask: PropTypes.func.isRequired,
   onEditTask: PropTypes.func.isRequired,
   onValueClick: PropTypes.func.isRequired,
+  categoryColor: PropTypes.string.isRequired,
 };
 
 export default TaskList;
