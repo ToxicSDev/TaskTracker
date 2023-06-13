@@ -79,6 +79,25 @@ const mapDispatchToProps = (dispatch) => ({
   attachToCategory(categoryId, taskId) {
     dispatch(categoryActions.attachToCategory(categoryId, taskId));
   },
+
+  onEditCategory(categoryId, name, color) {
+    const updatedCategory = {
+      id: categoryId,
+    };
+
+    if (name) {
+      updatedCategory.name = name;
+      updatedCategory.editing = false;
+    } else {
+      updatedCategory.editing = true;
+    }
+
+    if (color) {
+      updatedCategory.color = color;
+    }
+
+    dispatch(categoryActions.updateCategory(updatedCategory));
+  },
 });
 
 const DnDWrapper = DragSource(objectTypes.CATEGORY, categorySource, collectDragSource)(

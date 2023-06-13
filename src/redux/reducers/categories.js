@@ -8,31 +8,36 @@ const defaultState = [
     name: "To Do",
     editing: false,
     taskList: [],
+    color: "#3395f0",
   },
   {
     id: uuidv4(),
     name: "In Progress",
     editing: false,
     taskList: [],
+    color: "#d5db1f",
   },
   {
     id: uuidv4(),
     name: "Finished",
     editing: false,
     taskList: [],
+    color: "#5aba2f",
+
   },
   {
     id: uuidv4(),
     name: "Cancelled",
     editing: false,
     taskList: [],
+    color: "#cc2f2f"
   },
 ];
 
 export default function categories(state = defaultState, action) {
   switch (action.type) {
     case actionTypes.CREATE_CATEGORY:
-      return [...state, action.payload];
+      return [...state, {...action.payload, color: "#3395f0"}];
 
     case actionTypes.UPDATE_CATEGORY:
       return state.map((category) => {

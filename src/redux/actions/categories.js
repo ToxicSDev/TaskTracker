@@ -11,6 +11,7 @@ function createCategory(name) {
       id: uuidv4(),
       name,
       taskList: [],
+      color: "#3395f0",
     },
   };
 }

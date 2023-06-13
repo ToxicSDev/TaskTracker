@@ -34,13 +34,19 @@ const Category = ({
     connectDropTarget(
       <div className="category">
         {connectDragSource(
-          <h2 className="category-name">
+          <h2 className="category-name" style={{ borderTopColor: category.color }}>
             <Editable
               editing={category.editing}
               id={category.id}
               value={category.name}
               onEdit={onEditCategory}
               onValueClick={onEditCategory}
+            />
+            <input
+              type="color"
+              value={category.color || "#3395f0"}
+              className="category-color-picker"
+              onChange={(event) => onEditCategory(category.id, category.name, event.target.value)}
             />
             <button className="category-delete" onClick={handleDeleteCategory} />
           </h2>

@@ -279,8 +279,8 @@ body {
 }
 
 .logo {
-    width: 10%;
-    height: 10%;
+    width: 7%;
+    height: 7%;
     object-fit: contain;
     margin-left: 7%;
     align-self: center;
@@ -465,12 +465,22 @@ body {
 }
 
 .category-name {
+    display: flex;
     height: 50px;
     border-radius: 5px;
     box-shadow: 0 2px 8px #00000030;
     background-color: #fff;
     padding: 12px;
-    border-top: 2px solid #3395f0;
+    border-top: 2px solid
+}
+
+.category-color-picker {
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: -5%;
 }
 
 .category-name .editing {
